@@ -22,8 +22,8 @@ export function Footer() {
           <p className="font-semibold text-cream">Prazos</p>
           <p className="mt-2">Produção Dimona: 3–7 dias úteis + transporte.</p>
           <p className="mt-2">
-            <a href="/trocas" className="underline">Trocas e devoluções</a>: lisas trocam em 7 dias;
-            personalizadas, só por defeito.
+            <a href="/trocas" className="underline">Trocas e devoluções</a>: peças
+            personalizadas trocam apenas por defeito.
           </p>
         </div>
       </div>

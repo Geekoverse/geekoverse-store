@@ -6,26 +6,23 @@ import { ProductCard } from "@/components/ProductCard";
 
 export default function CatalogoPage() {
   const { products, notice } = useProducts();
-  const [tab, setTab] = useState<"todas" | "personalizadas" | "lisas">("todas");
   const [kind, setKind] = useState<"todos" | "camiseta" | "moletom">("todos");
   const [q, setQ] = useState("");
 
   const all = useMemo(() => {
     return products.filter((p) => {
-      if (tab === "personalizadas" && !p.personalized) return false;
-      if (tab === "lisas" && p.personalized) return false;
       if (kind !== "todos" && p.kind !== kind) return false;
       if (!q) return true;
       const hay = `${p.id} ${p.name} ${p.description} ${p.category}`.toLowerCase();
       return hay.includes(q.toLowerCase());
     });
-  }, [products, tab, kind, q]);
+  }, [products, kind, q]);
 
   return (
     <div className="py-10">
       <h1 className="text-2xl font-bold">Catálogo</h1>
       <p className="mt-1 text-sm text-cream/60">
-        Todos com ID visível para não confundir no pedido.
+        Peças autorais Geeko, feitas sob demanda. Todos com ID visível para não confundir no pedido.
       </p>
 
       {notice && (
@@ -33,34 +30,6 @@ export default function CatalogoPage() {
           {notice}
         </p>
       )}
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {(
-          [
-            { id: "todas", label: "Todas" },
-            { id: "personalizadas", label: "🎨 Personalizadas" },
-            { id: "lisas", label: "👕 Lisas" },
-          ] as const
-        ).map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`rounded-full px-4 py-1.5 text-sm border ${
-              tab === t.id ? "bg-cream text-ink border-cream font-semibold" : "border-cream/20 text-cream/80"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-      <p className="mt-2 text-xs text-cream/50">
-        {tab === "personalizadas"
-          ? "Feitas sob demanda com nossas estampas: troca apenas por defeito."
-          : tab === "lisas"
-            ? "Sem estampa: troca de tamanho em até 7 dias após receber."
-            : "Personalizadas têm troca só por defeito; lisas trocam de tamanho em 7 dias."}{" "}
-        <a href="/trocas" className="underline">Ver política</a>
-      </p>
 
       <div className="mt-4 flex flex-wrap gap-2">
         {(["todos", "camiseta", "moletom"] as const).map((k) => (
@@ -81,6 +50,10 @@ export default function CatalogoPage() {
           className="min-w-[220px] flex-1 rounded-full border border-cream/20 bg-transparent px-4 py-1.5 text-sm placeholder:text-cream/30"
         />
       </div>
+      <p className="mt-2 text-xs text-cream/50">
+        Peças personalizadas, feitas sob demanda: troca apenas por defeito ou erro nosso.{" "}
+        <a href="/trocas" className="underline">Ver política</a>
+      </p>
 
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
         {all.map((p) => (

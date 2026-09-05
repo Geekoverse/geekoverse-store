@@ -143,7 +143,7 @@ export default function AdminPage() {
       return;
     }
     const slug = form.slug || slugify(form.name);
-    const record = { ...form, slug, id: form.id.toUpperCase() };
+    const record = { ...form, slug, id: form.id.toUpperCase(), personalized: true };
     if (!editing) {
       if (items.some((p) => p.slug === slug) || PRODUCTS.some((p) => p.slug === slug)) {
         setMsg({ ok: false, text: "Já existe um produto com esse nome. Mude o título." });
@@ -417,27 +417,7 @@ export default function AdminPage() {
 
         {/* VISIBILIDADE */}
         {/* VISIBILIDADE */}
-        <p className="mt-4 text-sm font-semibold">5. Tipo de peça <span className="font-normal text-cream/50">(define a regra de troca)</span></p>
-        <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          <button
-            onClick={() => setForm((f) => ({ ...f, personalized: true }))}
-            className={`rounded-xl border px-4 py-3 text-left text-sm ${
-              form.personalized ? "border-cream bg-cream/10" : "border-cream/25"
-            }`}
-          >
-            🎨 Personalizada — com estampa, troca só por defeito
-          </button>
-          <button
-            onClick={() => setForm((f) => ({ ...f, personalized: false }))}
-            className={`rounded-xl border px-4 py-3 text-left text-sm ${
-              !form.personalized ? "border-cream bg-cream/10" : "border-cream/25"
-            }`}
-          >
-            👕 Lisa — sem estampa, troca de tamanho em 7 dias
-          </button>
-        </div>
-
-        <p className="mt-4 text-sm font-semibold">6. Onde aparece</p>
+        <p className="mt-4 text-sm font-semibold">5. Onde aparece</p>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           <button
             onClick={() => setForm((f) => ({ ...f, featured: !f.featured }))}
@@ -492,7 +472,7 @@ export default function AdminPage() {
               <img src={p.images[0]?.src ?? "/logo.jpeg"} alt={p.name} className="h-14 w-14 rounded-xl object-cover" />
               <div className="flex-1 text-sm">
                 <p className="text-[11px] text-cream/50">
-                  {p.id} • {formatPrice(p.price)} {!p.active && "• ⏸️ pausado"} {p.featured && "• ⭐ na home"} {p.personalized ? "• 🎨 personalizada" : "• 👕 lisa"}
+                  {p.id} • {formatPrice(p.price)} {!p.active && "• ⏸️ pausado"} {p.featured && "• ⭐ na home"}
                 </p>
                 <p className="font-semibold">{p.name}</p>
               </div>
@@ -527,18 +507,6 @@ export default function AdminPage() {
                 className="rounded-full border border-cream/25 px-3 py-1.5"
               >
                 {p.active ? "⏸️ Pausar" : "🟢 Ativar"}
-              </button>
-              <button
-                onClick={() =>
-                  quickToggle(
-                    p,
-                    { personalized: !p.personalized },
-                    p.personalized ? "Virou peça lisa (troca em 7 dias)." : "Virou personalizada (só defeito)."
-                  )
-                }
-                className="rounded-full border border-cream/25 px-3 py-1.5"
-              >
-                {p.personalized ? "👕 Virar lisa" : "🎨 Virar personalizada"}
               </button>
               <button onClick={() => remove(p.slug, p.name)} className="rounded-full border border-red-300/40 px-3 py-1.5 text-red-200">
                 🗑️ Apagar
