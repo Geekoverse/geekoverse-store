@@ -1,31 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { PRODUCTS, getAllProducts } from "@/data/products";
-import { CUSTOM_PRODUCTS_KEY } from "@/lib/config";
-import type { Product } from "@/types/catalog";
+import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 
-function loadCustom(): Product[] {
-  try {
-    const raw = localStorage.getItem(CUSTOM_PRODUCTS_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw) as Product[];
-  } catch {
-    return [];
-  }
-}
-
 export default function Home() {
-  const [custom, setCustom] = useState<Product[]>([]);
-
-  useEffect(() => {
-    setCustom(loadCustom());
-  }, []);
-
-  const all = getAllProducts(custom);
-  const featured = all.filter((p) => p.featured).slice(0, 6);
+  const { products, source, notice } = useProducts();
+  const featured = products.filter((p) => p.featured).slice(0, 6);
 
   return (
     <div className="py-10">
@@ -51,6 +32,7 @@ export default function Home() {
           </div>
           <p className="mt-4 text-xs text-cream/50">
             Produção sob demanda • Sem estoque • Feito via Dimona após pagamento
+            {source === "supabase" ? " • catálogo ao vivo" : ""}
           </p>
         </div>
         <div className="overflow-hidden rounded-3xl border border-cream/10">
@@ -58,6 +40,12 @@ export default function Home() {
           <img src="/logo.jpeg" alt="GEEKO — logo" className="aspect-square w-full object-cover" />
         </div>
       </section>
+
+      {notice && (
+        <p className="mt-6 rounded-2xl border border-yellow-200/20 bg-yellow-200/10 p-3 text-xs text-yellow-100/90">
+          {notice}
+        </p>
+      )}
 
       <div className="hairline my-10" />
 
@@ -92,10 +80,6 @@ export default function Home() {
           </div>
         ))}
       </section>
-
-      <p className="mt-8 hidden text-xs text-cream/30">
-        fallback count: {PRODUCTS.length}
-      </p>
     </div>
   );
 }

@@ -1,32 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { getAllProducts } from "@/data/products";
-import { CUSTOM_PRODUCTS_KEY } from "@/lib/config";
-import type { Product } from "@/types/catalog";
+import { useMemo, useState } from "react";
+import { useProducts } from "@/hooks/use-products";
 import { ProductCard } from "@/components/ProductCard";
 
 export default function CatalogoPage() {
-  const [custom, setCustom] = useState<Product[]>([]);
+  const { products, notice } = useProducts();
   const [kind, setKind] = useState<"todos" | "camiseta" | "moletom">("todos");
   const [q, setQ] = useState("");
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(CUSTOM_PRODUCTS_KEY);
-      if (raw) setCustom(JSON.parse(raw) as Product[]);
-    } catch {}
-  }, []);
-
   const all = useMemo(() => {
-    const list = getAllProducts(custom);
-    return list.filter((p) => {
+    return products.filter((p) => {
       if (kind !== "todos" && p.kind !== kind) return false;
       if (!q) return true;
       const hay = `${p.id} ${p.name} ${p.description} ${p.category}`.toLowerCase();
       return hay.includes(q.toLowerCase());
     });
-  }, [custom, kind, q]);
+  }, [products, kind, q]);
 
   return (
     <div className="py-10">
@@ -34,6 +24,12 @@ export default function CatalogoPage() {
       <p className="mt-1 text-sm text-cream/60">
         Todos com ID visível para não confundir no pedido.
       </p>
+
+      {notice && (
+        <p className="mt-4 rounded-2xl border border-yellow-200/20 bg-yellow-200/10 p-3 text-xs text-yellow-100/90">
+          {notice}
+        </p>
+      )}
 
       <div className="mt-4 flex flex-wrap gap-2">
         {(["todos", "camiseta", "moletom"] as const).map((k) => (

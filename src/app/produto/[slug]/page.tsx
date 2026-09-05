@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getProduct } from "@/data/products";
-import { CUSTOM_PRODUCTS_KEY } from "@/lib/config";
-import type { Product } from "@/types/catalog";
+import { useProducts } from "@/hooks/use-products";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/format";
 
@@ -12,28 +10,22 @@ export default function ProdutoPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const { addItem } = useCart();
-  const [custom, setCustom] = useState<Product[]>([]);
+  const { products, ready } = useProducts();
   const [size, setSize] = useState("");
   const [colorId, setColorId] = useState("");
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(CUSTOM_PRODUCTS_KEY);
-      if (raw) setCustom(JSON.parse(raw) as Product[]);
-    } catch {}
-  }, []);
-
-  const product = useMemo(
-    () => getProduct(params.slug, custom),
-    [params.slug, custom]
-  );
+  const product = products.find((p) => p.slug === params.slug);
 
   useEffect(() => {
     if (product) {
-      setSize(product.sizes[0] ?? "");
-      setColorId(product.colors[0]?.id ?? "");
+      setSize((s) => s || product.sizes[0] || "");
+      setColorId((c) => c || product.colors[0]?.id || "");
     }
   }, [product]);
+
+  if (!ready) {
+    return <div className="py-16 text-sm text-cream/60">Carregando…</div>;
+  }
 
   if (!product) {
     return (
