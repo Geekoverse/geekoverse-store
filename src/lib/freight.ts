@@ -20,7 +20,7 @@ export type FreightOption = {
 };
 
 const DIMONA_API_BASE =
-  process.env.DIMONA_API_BASE_URL ?? "https://api.camisadimona.com.br";
+  process.env.DIMONA_API_BASE_URL ?? "https://admin.camisadimona.com.br";
 const DIMONA_API_KEY = process.env.DIMONA_API_KEY ?? "";
 
 // Tabela fixa de SEGURANÇA (teto conservador) — calibre com simulações reais.
