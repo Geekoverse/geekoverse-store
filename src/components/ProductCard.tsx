@@ -15,7 +15,9 @@ export function ProductCard({ product }: { product: Product }) {
         className="aspect-square w-full object-cover"
       />
       <div className="p-4">
-        <p className="text-[11px] tracking-widest text-cream/50">{product.id} • {product.kind}</p>
+        <p className="text-[11px] tracking-widest text-cream/50">
+          {product.id} • {product.kind} • {product.personalized ? "🎨 personalizada" : "👕 lisa"}
+        </p>
         <h3 className="mt-1 font-semibold">{product.name}</h3>
         <p className="mt-1 text-sm text-cream/70">{formatPrice(product.price)}</p>
       </div>

@@ -11,6 +11,8 @@ export type Product = {
   colors: { id: string; name: string; hex: string }[];
   active: boolean;
   featured?: boolean;
+  /** true = personalizada Geeko (troca só por defeito); false = lisa (troca em 7 dias) */
+  personalized: boolean;
   createdAt: string;
 };
 
@@ -24,4 +26,5 @@ export type CartItem = {
   colorName: string;
   quantity: number;
   unitPrice: number;
+  personalized?: boolean;
 };

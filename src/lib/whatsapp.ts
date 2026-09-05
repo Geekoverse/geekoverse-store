@@ -13,7 +13,8 @@ export function buildWhatsAppMessage(items: CartItem[]) {
   ];
 
   items.forEach((item) => {
-    lines.push(`• [${item.productId}] ${item.name}`);
+    const tag = item.personalized === false ? "lisa" : "personalizada";
+    lines.push(`• [${item.productId}] ${item.name} (${tag})`);
     lines.push(`Tamanho: ${item.size}`);
     lines.push(`Cor: ${item.colorName}`);
     lines.push(`Qtd: ${item.quantity}`);

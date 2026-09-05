@@ -53,8 +53,23 @@ export default function ProdutoPage() {
           {product.id} • {product.kind} • {product.category}
         </p>
         <h1 className="mt-2 text-3xl font-bold">{product.name}</h1>
+        <p className="mt-2">
+          <span
+            className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+              product.personalized ? "border border-cream/25 text-cream/80" : "bg-cream/10 text-cream"
+            }`}
+          >
+            {product.personalized ? "🎨 Peça personalizada" : "👕 Peça lisa"}
+          </span>
+        </p>
         <p className="mt-2 text-xl">{formatPrice(product.price)}</p>
         <p className="mt-4 text-sm leading-relaxed text-cream/75">{product.description}</p>
+        <p className="mt-3 rounded-xl border border-cream/10 bg-coal p-3 text-xs text-cream/65">
+          {product.personalized
+            ? "Feita sob demanda pra você: troca apenas por defeito ou erro nosso. Ver política de trocas."
+            : "Peça lisa: troca de tamanho em até 7 dias após receber. Ver política de trocas."}{" "}
+          <a href="/trocas" className="underline text-cream">Ler política</a>
+        </p>
 
         <div className="mt-6">
           <p className="text-sm font-semibold">Tamanho</p>
@@ -100,6 +115,7 @@ export default function ProdutoPage() {
               colorName: color.name,
               unitPrice: product.price,
               quantity: 1,
+              personalized: product.personalized,
             });
             router.push("/carrinho");
           }}

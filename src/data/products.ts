@@ -22,6 +22,7 @@ export const PRODUCTS: Product[] = [
     ],
     active: true,
     featured: true,
+    personalized: true,
     createdAt: "2026-09-01",
   },
   {
@@ -44,6 +45,7 @@ export const PRODUCTS: Product[] = [
     ],
     active: true,
     featured: true,
+    personalized: true,
     createdAt: "2026-09-01",
   },
   {
@@ -63,6 +65,47 @@ export const PRODUCTS: Product[] = [
     colors: [{ id: "preta", name: "Preta", hex: "#111111" }],
     active: true,
     featured: true,
+    personalized: true,
+    createdAt: "2026-09-01",
+  },
+  {
+    id: "GKV-LISA-001",
+    name: "Camiseta Lisa Preta",
+    slug: "camiseta-lisa-preta",
+    description:
+      "Camiseta lisa preta, algodão penteado, sem estampa. Troca fácil em 7 dias.",
+    price: 59.9,
+    kind: "camiseta",
+    category: "Lisas",
+    images: [
+      { src: "/logo.jpeg", alt: "Camiseta Lisa Preta — frente" },
+      { src: "/logo.jpeg", alt: "Camiseta Lisa Preta — verso" },
+    ],
+    sizes: ["P", "M", "G", "GG"],
+    colors: [{ id: "preta", name: "Preta", hex: "#111111" }],
+    active: true,
+    featured: false,
+    personalized: false,
+    createdAt: "2026-09-01",
+  },
+  {
+    id: "GKV-LISA-002",
+    name: "Camiseta Lisa Off-white",
+    slug: "camiseta-lisa-off-white",
+    description:
+      "Camiseta lisa off-white, algodão penteado, sem estampa. Troca fácil em 7 dias.",
+    price: 59.9,
+    kind: "camiseta",
+    category: "Lisas",
+    images: [
+      { src: "/logo.jpeg", alt: "Camiseta Lisa Off-white — frente" },
+      { src: "/logo.jpeg", alt: "Camiseta Lisa Off-white — verso" },
+    ],
+    sizes: ["P", "M", "G", "GG"],
+    colors: [{ id: "off", name: "Off-white", hex: "#f3efe6" }],
+    active: true,
+    featured: false,
+    personalized: false,
     createdAt: "2026-09-01",
   },
 ];

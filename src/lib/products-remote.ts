@@ -14,6 +14,7 @@ type Row = {
   colors: { id: string; name: string; hex: string }[] | null;
   active: boolean | null;
   featured: boolean | null;
+  personalized?: boolean | null;
   created_at: string | null;
 };
 
@@ -37,6 +38,8 @@ export function rowToProduct(r: Row): Product {
         : [{ id: "preta", name: "Preta", hex: "#111111" }],
     active: r.active ?? true,
     featured: r.featured ?? false,
+    // Coluna nova: se ainda não foi criada no Supabase, assume personalizada (regra mais segura)
+    personalized: r.personalized ?? true,
     createdAt: (r.created_at ?? new Date().toISOString()).slice(0, 10),
   };
 }
@@ -58,23 +61,28 @@ export async function fetchProducts(): Promise<{ products: Product[]; source: "s
 
 export async function upsertProduct(p: Product): Promise<{ error?: string }> {
   if (!supabaseConfigured || !supabase) return { error: "supabase-nao-configurado" };
-  const { error } = await supabase.from("products").upsert(
-    {
-      id: p.id,
-      slug: p.slug,
-      name: p.name,
-      description: p.description,
-      price: p.price,
-      kind: p.kind,
-      category: p.category,
-      images: p.images,
-      sizes: p.sizes,
-      colors: p.colors,
-      active: p.active,
-      featured: p.featured ?? false,
-    },
-    { onConflict: "slug" }
-  );
+  const base = {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    description: p.description,
+    price: p.price,
+    kind: p.kind,
+    category: p.category,
+    images: p.images,
+    sizes: p.sizes,
+    colors: p.colors,
+    active: p.active,
+    featured: p.featured ?? false,
+  };
+  // Tenta com a coluna nova; se ela ainda não existir no banco, salva sem ela
+  let { error } = await supabase
+    .from("products")
+    .upsert({ ...base, personalized: p.personalized }, { onConflict: "slug" });
+  if (error && /personalized|column|schema cache/i.test(error.message)) {
+    const retry = await supabase.from("products").upsert(base, { onConflict: "slug" });
+    error = retry.error;
+  }
   if (error) return { error: error.message };
   return {};
 }
