@@ -16,7 +16,14 @@ function loadLocalCustom(): Product[] {
   }
 }
 
+function mergeLocal(): Product[] {
+  const custom = loadLocalCustom();
+  return [...custom, ...PRODUCTS.filter((p) => !custom.some((c) => c.slug === p.slug))];
+}
+
 export function useProducts() {
+  // Quando o Supabase está conectado, o site mostra SÓ o que está no banco
+  // (ou seja, só o que o /admin controla). Sem conexão, usa os exemplos locais.
   const [remote, setRemote] = useState<Product[] | null>(null);
   const [source, setSource] = useState<"supabase" | "local">("local");
   const [notice, setNotice] = useState<string | null>(null);
@@ -24,22 +31,13 @@ export function useProducts() {
   useEffect(() => {
     let alive = true;
     (async () => {
-      const localCustom = loadLocalCustom();
       const { products, source: src, error } = await fetchProducts();
       if (!alive) return;
       if (src === "supabase") {
-        const slugs = new Set(products.map((p) => p.slug));
-        const merged = [
-          ...products,
-          ...localCustom.filter((p) => !slugs.has(p.slug)),
-          ...PRODUCTS.filter(
-            (p) => !slugs.has(p.slug) && !localCustom.some((c) => c.slug === p.slug)
-          ),
-        ];
-        setRemote(merged);
+        setRemote(products);
         setSource("supabase");
       } else {
-        setRemote([...localCustom, ...PRODUCTS.filter((p) => !localCustom.some((c) => c.slug === p.slug))]);
+        setRemote(mergeLocal());
         setSource("local");
         if (error && error.includes("products")) {
           setNotice("Tabela products ainda não criada no Supabase — usando produtos locais. Rode o SQL.");
@@ -52,13 +50,9 @@ export function useProducts() {
   }, []);
 
   return {
-    products: remote ?? [...loadLocalSnapshot(), ...PRODUCTS],
+    products: remote ?? PRODUCTS,
     source,
     notice,
     ready: remote !== null,
   };
-}
-
-function loadLocalSnapshot(): Product[] {
-  return [];
 }

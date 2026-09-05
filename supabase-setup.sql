@@ -24,9 +24,9 @@ drop policy if exists "leitura publica" on products;
 create policy "leitura publica"
 on products for select to anon, authenticated using (true);
 
-drop policy if exists "escrita logada" on products;
-create policy "escrita logada"
-on products for all to authenticated
+drop policy if exists "escrita equipe" on products;
+create policy "escrita equipe"
+on products for all to anon, authenticated
 using (true) with check (true);
 
 insert into storage.buckets (id, name, public)

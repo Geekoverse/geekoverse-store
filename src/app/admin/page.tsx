@@ -85,6 +85,23 @@ export default function AdminPage() {
     }
   }
 
+  const seedExamples = async () => {
+    if (!supabaseConfigured || !usingRemote) {
+      setMsg({ ok: false, text: "Conecte o Supabase primeiro (rode o SQL) para importar." });
+      return;
+    }
+    if (!confirm("Importar os 3 produtos de exemplo para o banco?")) return;
+    for (const p of PRODUCTS) {
+      const { error } = await upsertProduct(p);
+      if (error) {
+        setMsg({ ok: false, text: `Erro ao importar: ${error}` });
+        return;
+      }
+    }
+    await refresh();
+    setMsg({ ok: true, text: "Exemplos importados! Agora você edita, tira da home ou apaga eles aqui." });
+  };
+
   async function persist(record: Product, prevSlug: string | null) {
     if (supabaseConfigured && usingRemote) {
       const { error } = await upsertProduct(record);
@@ -437,7 +454,14 @@ export default function AdminPage() {
       </div>
 
       {/* LISTA */}
-      <h2 className="mt-8 text-lg font-bold">Produtos cadastrados ({items.length})</h2>
+      <div className="mt-8 flex items-center justify-between">
+        <h2 className="text-lg font-bold">Produtos cadastrados ({items.length})</h2>
+        {usingRemote && (
+          <button onClick={seedExamples} className="rounded-full border border-cream/25 px-4 py-2 text-xs">
+            📥 Importar exemplos
+          </button>
+        )}
+      </div>
       <div className="mt-3 space-y-2">
         {items.map((p) => (
           <div key={p.slug} className="rounded-2xl border border-cream/10 bg-coal p-3">
