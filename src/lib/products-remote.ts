@@ -85,3 +85,24 @@ export async function deleteProduct(slug: string): Promise<{ error?: string }> {
   if (error) return { error: error.message };
   return {};
 }
+
+export async function uploadMockup(
+  file: File,
+  slug: string
+): Promise<{ url?: string; error?: string }> {
+  if (!supabaseConfigured || !supabase)
+    return { error: "Supabase não configurado na Vercel." };
+  if (!file.type.startsWith("image/"))
+    return { error: "O arquivo precisa ser uma imagem (JPG ou PNG)." };
+  if (file.size > 5 * 1024 * 1024)
+    return { error: "Imagem muito grande. Use até 5MB." };
+  const ext = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+  const safe = (slug || "produto").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const path = `${safe}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await supabase.storage
+    .from("mockups")
+    .upload(path, file, { upsert: true, contentType: file.type || `image/${ext}` });
+  if (error) return { error: error.message };
+  const { data } = supabase.storage.from("mockups").getPublicUrl(path);
+  return { url: data.publicUrl };
+}
