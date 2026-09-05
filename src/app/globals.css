@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --ink: #0c0c0f;
+  --cream: #f3efe6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+::selection {
+  background: #f3efe6;
+  color: #0c0c0f;
+}
+
+.hairline {
+  background: rgba(243, 239, 230, 0.14);
+  height: 1px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
