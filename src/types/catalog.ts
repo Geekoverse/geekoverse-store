@@ -13,6 +13,12 @@ export type Product = {
   featured?: boolean;
   /** true = personalizada Geeko (troca só por defeito); false = lisa (troca em 7 dias) */
   personalized: boolean;
+  /** SKU base da peça na Dimona (ex: CAM-ALG-PRETA-G). Obrigatório p/ automação. */
+  dimonaSku?: string;
+  /** URL pública do PNG em alta da estampa (300 DPI, fundo transparente). */
+  printArtUrl?: string;
+  /** Mapa opcional "TAMANHO:corId" -> SKU Dimona. Ex: {"G:preta":"CAM-ALG-PRETA-G"} */
+  dimonaVariantSkus?: Record<string, string>;
   createdAt: string;
 };
 

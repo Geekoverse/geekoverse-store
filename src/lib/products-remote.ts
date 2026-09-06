@@ -15,6 +15,9 @@ type Row = {
   active: boolean | null;
   featured: boolean | null;
   personalized?: boolean | null;
+  dimona_sku?: string | null;
+  print_art_url?: string | null;
+  dimona_variant_skus?: Record<string, string> | null;
   created_at: string | null;
 };
 
@@ -40,6 +43,11 @@ export function rowToProduct(r: Row): Product {
     featured: r.featured ?? false,
     // Coluna nova: se ainda não foi criada no Supabase, assume personalizada (regra mais segura)
     personalized: r.personalized ?? true,
+    // Automação Dimona: colunas novas (migration supabase-automation.sql).
+    // Se o banco ainda não foi migrado, vêm como undefined e o admin avisa.
+    dimonaSku: r.dimona_sku ?? "",
+    printArtUrl: r.print_art_url ?? "",
+    dimonaVariantSkus: r.dimona_variant_skus ?? {},
     createdAt: (r.created_at ?? new Date().toISOString()).slice(0, 10),
   };
 }
@@ -75,11 +83,31 @@ export async function upsertProduct(p: Product): Promise<{ error?: string }> {
     active: p.active,
     featured: p.featured ?? false,
   };
-  // Tenta com a coluna nova; se ela ainda não existir no banco, salva sem ela
+  // Colunas novas da automação (supabase-automation.sql). Fallback em cascata
+  // para bancos ainda não migrados: tenta com tudo → sem variantes → sem nada.
+  const full = {
+    ...base,
+    personalized: p.personalized,
+    dimona_sku: (p.dimonaSku ?? "").trim(),
+    print_art_url: (p.printArtUrl ?? "").trim(),
+    dimona_variant_skus: p.dimonaVariantSkus ?? {},
+  };
   let { error } = await supabase
     .from("products")
-    .upsert({ ...base, personalized: p.personalized }, { onConflict: "slug" });
-  if (error && /personalized|column|schema cache/i.test(error.message)) {
+    .upsert(full, { onConflict: "slug" });
+  if (error && /dimona_variant_skus|column|schema cache/i.test(error.message)) {
+    const retry = await supabase.from("products").upsert(
+      {
+        ...base,
+        personalized: p.personalized,
+        dimona_sku: (p.dimonaSku ?? "").trim(),
+        print_art_url: (p.printArtUrl ?? "").trim(),
+      },
+      { onConflict: "slug" }
+    );
+    error = retry.error;
+  }
+  if (error && /personalized|dimona_sku|print_art_url|column|schema cache/i.test(error.message)) {
     const retry = await supabase.from("products").upsert(base, { onConflict: "slug" });
     error = retry.error;
   }
@@ -112,5 +140,31 @@ export async function uploadMockup(
     .upload(path, file, { upsert: true, contentType: file.type || `image/${ext}` });
   if (error) return { error: error.message };
   const { data } = supabase.storage.from("mockups").getPublicUrl(path);
+  return { url: data.publicUrl };
+}
+
+/**
+ * Upload da ARTE em alta para o bucket "print-arts" (PNG p/ produção Dimona).
+ * Rode supabase-automation.sql antes — senão falha com erro de policy/bucket.
+ * Aceita PNG até 15MB (alta resolução 200–300 DPI).
+ */
+export async function uploadPrintArt(
+  file: File,
+  slug: string
+): Promise<{ url?: string; error?: string }> {
+  if (!supabaseConfigured || !supabase)
+    return { error: "Supabase não configurado na Vercel." };
+  if (!file.type.startsWith("image/"))
+    return { error: "A arte precisa ser uma imagem (PNG com fundo transparente)." };
+  if (file.size > 15 * 1024 * 1024)
+    return { error: "Arte muito grande. Use PNG até 15MB." };
+  const ext = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "png";
+  const safe = (slug || "produto").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const path = `${safe}/arte-${Date.now()}.${ext}`;
+  const { error } = await supabase.storage
+    .from("print-arts")
+    .upload(path, file, { upsert: true, contentType: file.type || `image/${ext}` });
+  if (error) return { error: `${error.message} — rode supabase-automation.sql no Supabase.` };
+  const { data } = supabase.storage.from("print-arts").getPublicUrl(path);
   return { url: data.publicUrl };
 }

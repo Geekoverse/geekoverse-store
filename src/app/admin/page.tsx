@@ -7,6 +7,7 @@ import {
   deleteProduct,
   fetchProducts,
   uploadMockup,
+  uploadPrintArt,
   upsertProduct,
 } from "@/lib/products-remote";
 import type { Product } from "@/types/catalog";
@@ -35,6 +36,9 @@ const empty: Product = {
   active: true,
   featured: false,
   personalized: true,
+  dimonaSku: "",
+  printArtUrl: "",
+  dimonaVariantSkus: {},
   createdAt: new Date().toISOString().slice(0, 10),
 };
 
@@ -56,6 +60,7 @@ export default function AdminPage() {
   const [usingRemote, setUsingRemote] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [variantText, setVariantText] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -142,8 +147,31 @@ export default function AdminPage() {
       setMsg({ ok: false, text: "Escolha pelo menos 1 cor." });
       return;
     }
+    // Automação Dimona: sem SKU + arte o checkout automático recusa a venda
+    if (!(form.dimonaSku ?? "").trim()) {
+      setMsg({ ok: false, text: "Preencha o SKU base da Dimona (seção 5). Sem ele o pedido não vai para produção." });
+      return;
+    }
+    if (!(form.printArtUrl ?? "").trim()) {
+      setMsg({ ok: false, text: "Cole o link da estampa em alta (PNG) ou suba o arquivo (seção 5). Sem ele a Dimona não imprime." });
+      return;
+    }
     const slug = form.slug || slugify(form.name);
-    const record = { ...form, slug, id: form.id.toUpperCase(), personalized: true };
+    // Variantes: valida o JSON digitado antes de gravar
+    let variantMap: Record<string, string> = form.dimonaVariantSkus ?? {};
+    if (variantText.trim()) {
+      try {
+        const parsed = JSON.parse(variantText) as Record<string, string>;
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("json");
+        variantMap = parsed;
+      } catch {
+        setMsg({ ok: false, text: "Variantes Dimona com JSON inválido. Ex: {\"G:preta\":\"CAM-ALG-PRETA-G\"} ou deixe vazio." });
+        return;
+      }
+    } else {
+      variantMap = {};
+    }
+    const record = { ...form, slug, id: form.id.toUpperCase(), personalized: true, dimonaVariantSkus: variantMap };
     if (!editing) {
       if (items.some((p) => p.slug === slug) || PRODUCTS.some((p) => p.slug === slug)) {
         setMsg({ ok: false, text: "Já existe um produto com esse nome. Mude o título." });
@@ -159,6 +187,7 @@ export default function AdminPage() {
         : "Salvo neste navegador. Rode o SQL no Supabase para valer pros 4.",
     });
     setForm(empty);
+    setVariantText("");
     setEditing(null);
   };
 
@@ -415,9 +444,75 @@ export default function AdminPage() {
           ))}
         </div>
 
+        {/* AUTOMAÇÃO DIMONA — mesma aparência dos demais campos, só lógica nova */}
+        <p className="mt-4 text-sm font-semibold">5. Automação Dimona <span className="font-normal text-cream/50">(SKU + arte PNG em alta)</span></p>
+        <div className="mt-2 grid gap-2">
+          <input
+            value={form.dimonaSku ?? ""}
+            onChange={(e) => setForm({ ...form, dimonaSku: e.target.value.toUpperCase().trim() })}
+            placeholder="SKU base Dimona — ex: CAM-ALG-PRETA-G"
+            className="rounded-xl border border-cream/20 bg-transparent px-4 py-3 text-sm"
+          />
+          <div className="flex gap-2">
+            <input
+              value={form.printArtUrl ?? ""}
+              onChange={(e) => setForm({ ...form, printArtUrl: e.target.value.trim() })}
+              placeholder="Link da estampa em alta (PNG 300 DPI, fundo transparente)"
+              className="flex-1 rounded-xl border border-cream/20 bg-transparent px-4 py-3 text-sm"
+            />
+            <label className="cursor-pointer rounded-xl border border-cream/25 px-4 py-3 text-sm hover:border-cream/60">
+              ⬆️ PNG
+              <input
+                type="file"
+                accept="image/png,image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const f = e.target.files?.[0];
+                  e.target.value = "";
+                  if (!f) return;
+                  setUploading(true);
+                  const slug = form.slug || slugify(form.name) || "produto";
+                  const { url, error } = await uploadPrintArt(f, slug);
+                  setUploading(false);
+                  if (error) {
+                    setMsg({ ok: false, text: `Falha no upload da arte: ${error}` });
+                    return;
+                  }
+                  if (url) setForm((prev) => ({ ...prev, printArtUrl: url }));
+                }}
+              />
+            </label>
+          </div>
+          <textarea
+            value={variantText}
+            onChange={(e) => {
+              const v = e.target.value;
+              setVariantText(v);
+              if (!v.trim()) {
+                setForm((prev) => ({ ...prev, dimonaVariantSkus: {} }));
+                return;
+              }
+              try {
+                const parsed = JSON.parse(v) as Record<string, string>;
+                if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+                  setForm((prev) => ({ ...prev, dimonaVariantSkus: parsed }));
+                }
+              } catch {
+                // JSON incompleto enquanto digita: não atualiza o form até validar
+              }
+            }}
+            placeholder='Variantes por tamanho/cor (opcional) — ex: {"P:preta":"CAM-ALG-PRETA-P","G:preta":"CAM-ALG-PRETA-G"}'
+            rows={2}
+            className="w-full rounded-xl border border-cream/20 bg-transparent px-4 py-3 text-sm"
+          />
+          <p className="text-xs text-cream/50">
+            O SKU base vale para todos os tamanhos. Se a Dimona usar SKU diferente por tamanho/cor, preencha as variantes como acima. A arte precisa ser URL pública (a Dimona baixa o PNG na produção).
+          </p>
+        </div>
+
         {/* VISIBILIDADE */}
         {/* VISIBILIDADE */}
-        <p className="mt-4 text-sm font-semibold">5. Onde aparece</p>
+        <p className="mt-4 text-sm font-semibold">6. Onde aparece</p>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           <button
             onClick={() => setForm((f) => ({ ...f, featured: !f.featured }))}
@@ -446,6 +541,7 @@ export default function AdminPage() {
               onClick={() => {
                 setEditing(null);
                 setForm(empty);
+                setVariantText("");
               }}
               className="rounded-full border border-cream/25 px-5 text-sm"
             >
@@ -473,6 +569,7 @@ export default function AdminPage() {
               <div className="flex-1 text-sm">
                 <p className="text-[11px] text-cream/50">
                   {p.id} • {formatPrice(p.price)} {!p.active && "• ⏸️ pausado"} {p.featured && "• ⭐ na home"}
+                  {p.dimonaSku ? " • 🤖 auto" : " • 🔴 sem SKU"}
                 </p>
                 <p className="font-semibold">{p.name}</p>
               </div>
@@ -480,7 +577,16 @@ export default function AdminPage() {
             <div className="mt-2 flex flex-wrap gap-2 text-xs">
               <button
                 onClick={() => {
-                  setForm(p);
+                  setForm({
+                    ...p,
+                    dimonaSku: p.dimonaSku ?? "",
+                    printArtUrl: p.printArtUrl ?? "",
+                    dimonaVariantSkus: p.dimonaVariantSkus ?? {},
+                  });
+                  const v = p.dimonaVariantSkus && Object.keys(p.dimonaVariantSkus).length > 0
+                    ? JSON.stringify(p.dimonaVariantSkus)
+                    : "";
+                  setVariantText(v);
                   setEditing(p.slug);
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
