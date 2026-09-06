@@ -10,7 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={product.images[0]?.src ?? "/logo.jpeg"}
+        src={product.images[0]?.src ?? "/sagyx-icon.png"}
         alt={product.images[0]?.alt ?? product.name}
         className="aspect-square w-full object-cover"
       />

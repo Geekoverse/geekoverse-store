@@ -1,0 +1,48 @@
+PROMPT — LOGO SAGYX (copie tudo abaixo da linha e cole no ChatGPT)
+====================================================================
+
+Crie a identidade visual de uma marca streetwear chamada SAGYX
+(lê-se "sa-GUIX"), mascote: uma raposa original chamada Rapoza,
+slogan: "Não siga. Antecipe."
+
+IDENTIDADE A PRESERVAR (da marca anterior Geeko):
+- Fundo quase-preto (#0E0E10) + traço creme quente (#F3EBD8), estética
+  premium minimalista, nada colorido, nada infantil.
+- Composição do lockup: ÍCONE acima, WORDMARK abaixo em caixa alta com
+  espaçamento largo entre letras, slogan em micro-tipografia fina abaixo.
+- Espírito: escuro, afiado, rebelde e limpo.
+
+O QUE CRIAR (3 entregas):
+1. ÍCONE — cabeça/silhueta de raposa 100% ORIGINAL, minimalista, traço
+   geométrico e afiado (orelhas pontudas, olhar astuto e estreito),
+   cor creme sólida em fundo quase-preto. Deve funcionar com 2 cm de altura.
+2. LOCKUP COMPLETO — o ícone + a palavra "SAGYX" em tipografia forte,
+   geométrica, caixa alta e espaçada + abaixo, pequeno e fino:
+   "Não siga. Antecipe."
+3. FAVICON — só o ícone da raposa, centralizado, em quadrado preto.
+
+REGRAS RÍGIDAS (não negociáveis):
+- Design 100% original. NÃO copie Firefox, Star Fox (Falco), Kurama,
+  Fantastic Mr. Fox, Riot ou qualquer logo existente de raposa.
+- SEM texto além de "SAGYX" e "Não siga. Antecipe.". Confira letra por
+  letra: S-A-G-Y-X. Sem letras trocadas, sem palavras extras, sem watermark.
+- SEM gradientes, SEM brilho neon, SEM sombras: tudo chapado (flat),
+  estilo vetorial.
+- SEMPRE fundo quase-preto com traço creme, nunca o inverso.
+
+Estilo de referência: logos minimalistas de streetwear premium
+(RipnDip, Stüssy, BAPE) em versão monocromática luxuosa.
+
+====================================================================
+DICAS DE USO (leia antes de gerar):
+1. Gere o ÍCONE primeiro, sozinho. Só aprove se a raposa for inconfundível
+   e original — peça variações ("mais agressiva", "mais geométrica").
+2. Gere o LOCKUP depois, e confira a ortografia com lupa: modelos de
+   imagem erram "SAGYX" com frequência (trocam Y por I, somem com o X).
+   Se errar, gere de novo em vez de consertar — texto remendado sempre
+   aparece na estampa.
+3. Peça também "versão do ícone em fundo TRANSPARENTE, só o traço creme"
+   para usar como bordado/peito de camisa.
+4. O slogan vai em micro-tipografia: se sair borrado no teste, use o
+   lockup SEM slogan nas peças e deixe "Não siga. Antecipe." só para
+   costas, etiquetas e site (feito em editor, não na imagem gerada).

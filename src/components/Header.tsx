@@ -11,7 +11,7 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.jpeg" alt="GEEKO" className="h-9 w-9 rounded-full object-cover" />
+          <img src="/sagyx-icon.png" alt="SAGYX" className="h-9 w-9 rounded-full object-cover" />
           <span className="text-sm font-semibold tracking-[0.35em]">{SITE_NAME}</span>
         </Link>
         <nav className="flex items-center gap-4 text-sm text-cream/80">

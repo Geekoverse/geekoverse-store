@@ -1,5 +1,5 @@
 /**
- * Frete Geeko — Dimona
+ * Frete SAGYX — Dimona
  *
  * Estratégia em 2 níveis (recomendação oficial da Dimona):
  *  1. API Dimona (POST /api/v2/shipping) — valor exato por produto + CEP.

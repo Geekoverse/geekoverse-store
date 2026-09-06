@@ -2,16 +2,16 @@ export default function SobrePage() {
   return (
     <div className="py-10">
       <p className="text-xs tracking-[0.35em] text-cream/60">QUEM SOMOS</p>
-      <h1 className="mt-2 text-3xl font-bold">GEEKO — Seu universo. Seu estilo.</h1>
+      <h1 className="mt-2 text-3xl font-bold">SAGYX — Não siga. Antecipe.</h1>
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <div className="overflow-hidden rounded-3xl border border-cream/10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.jpeg" alt="Logo GEEKO" className="aspect-square w-full object-cover" />
+          <img src="/sagyx-icon.png" alt="Logo SAGYX" className="aspect-square w-full object-cover" />
         </div>
         <div className="space-y-4 text-sm leading-relaxed text-cream/75">
           <p>
-            Somos 4 amigos apaixonados por cultura geek. Nosso diferencial são estampas
-            minimalistas na frente e nas costas — sem exagero, com estilo para usar todo dia.
+            Somos 4 amigos apaixonados por streetwear autoral. Nosso diferencial são estampas
+            próprias na frente e nas costas — sem exagero, com estilo para usar todo dia.
           </p>
           <p>
             Trabalhamos com Print on Demand via Dimona: só produzimos o que você compra.

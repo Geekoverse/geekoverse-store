@@ -239,7 +239,7 @@ export default function AdminPage() {
   if (!authed) {
     return (
       <div className="mx-auto max-w-sm py-16">
-        <h1 className="text-xl font-bold">Admin GEEKO</h1>
+        <h1 className="text-xl font-bold">Admin SAGYX</h1>
         <p className="mt-1 text-sm text-cream/60">Só para a equipe.</p>
         <input
           type="password"
@@ -565,7 +565,7 @@ export default function AdminPage() {
           <div key={p.slug} className="rounded-2xl border border-cream/10 bg-coal p-3">
             <div className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.images[0]?.src ?? "/logo.jpeg"} alt={p.name} className="h-14 w-14 rounded-xl object-cover" />
+              <img src={p.images[0]?.src ?? "/sagyx-icon.png"} alt={p.name} className="h-14 w-14 rounded-xl object-cover" />
               <div className="flex-1 text-sm">
                 <p className="text-[11px] text-cream/50">
                   {p.id} • {formatPrice(p.price)} {!p.active && "• ⏸️ pausado"} {p.featured && "• ⭐ na home"}

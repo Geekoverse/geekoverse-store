@@ -99,7 +99,7 @@ export default function ProdutoPage() {
               productId: product.id,
               slug: product.slug,
               name: product.name,
-              image: product.images[0]?.src ?? "/logo.jpeg",
+              image: product.images[0]?.src ?? "/sagyx-icon.png",
               size,
               colorId: color.id,
               colorName: color.name,

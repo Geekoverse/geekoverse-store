@@ -5,9 +5,9 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "GEEKO — Seu universo. Seu estilo.",
+  title: "SAGYX — Não siga. Antecipe.",
   description:
-    "Roupas geek minimalistas frente + verso. Camisetas e moletons sob demanda.",
+    "Streetwear autoral: camisetas e moletons sob demanda. Não siga. Antecipe.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

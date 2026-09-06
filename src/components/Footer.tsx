@@ -8,7 +8,7 @@ export function Footer() {
           <p className="text-sm font-semibold tracking-[0.35em]">{SITE_NAME}</p>
           <p className="mt-2 text-sm text-cream/60">{SITE_TAGLINE}</p>
           <p className="mt-2 text-xs text-cream/50">
-            Peças geek minimalistas frente + verso. Produção sob demanda via Dimona.
+            Peças autorais frente + verso. Produção sob demanda via Dimona.
           </p>
         </div>
         <div className="text-sm text-cream/70">

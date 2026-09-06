@@ -22,7 +22,7 @@ export default function CatalogoPage() {
     <div className="py-10">
       <h1 className="text-2xl font-bold">Catálogo</h1>
       <p className="mt-1 text-sm text-cream/60">
-        Peças autorais Geeko, feitas sob demanda. Todos com ID visível para não confundir no pedido.
+        Peças autorais SAGYX, feitas sob demanda. Todos com ID visível para não confundir no pedido.
       </p>
 
       {notice && (

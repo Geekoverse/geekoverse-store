@@ -33,7 +33,7 @@ export function rowToProduct(r: Row): Product {
     images:
       r.images && r.images.length > 0
         ? r.images
-        : [{ src: "/logo.jpeg", alt: `${r.name} — frente` }],
+        : [{ src: "/sagyx-icon.png", alt: `${r.name} — frente` }],
     sizes: r.sizes && r.sizes.length > 0 ? r.sizes : ["P", "M", "G", "GG"],
     colors:
       r.colors && r.colors.length > 0

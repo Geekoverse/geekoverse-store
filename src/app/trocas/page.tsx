@@ -3,15 +3,15 @@ import Link from "next/link";
 export default function TrocasPage() {
   return (
     <div className="mx-auto max-w-3xl py-10">
-      <p className="text-xs tracking-[0.35em] text-cream/60">GEEKO • REGRAS CLARAS</p>
+      <p className="text-xs tracking-[0.35em] text-cream/60">SAGYX • REGRAS CLARAS</p>
       <h1 className="mt-2 text-3xl font-bold">Trocas e devoluções</h1>
       <p className="mt-2 text-sm text-cream/60">
-        Todas as peças Geeko são personalizadas e feitas sob demanda, só pra você.
+        Todas as peças SAGYX são personalizadas e feitas sob demanda, só pra você.
         Na dúvida, chama no WhatsApp antes de comprar.
       </p>
 
       <div className="mt-6 rounded-2xl border border-cream/10 bg-coal p-5">
-        <p className="text-lg font-bold">🎨 Peças personalizadas Geeko</p>
+        <p className="text-lg font-bold">🎨 Peças personalizadas SAGYX</p>
         <ul className="mt-3 space-y-2 text-sm text-cream/75">
           <li>✅ <strong>Defeito ou erro nosso</strong>: troca grátis total. Avise em até 7 dias corridos após receber, com fotos da peça e da embalagem</li>
           <li>❌ <strong>Sem troca</strong> por tamanho errado, cor ou arrependimento — a peça é produzida exclusivamente pro seu pedido e não pode ser revendida</li>

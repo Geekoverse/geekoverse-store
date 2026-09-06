@@ -11,7 +11,7 @@ export type Product = {
   colors: { id: string; name: string; hex: string }[];
   active: boolean;
   featured?: boolean;
-  /** true = personalizada Geeko (troca só por defeito); false = lisa (troca em 7 dias) */
+  /** true = personalizada SAGYX (troca só por defeito); false = lisa (troca em 7 dias) */
   personalized: boolean;
   /** SKU base da peça na Dimona (ex: CAM-ALG-PRETA-G). Obrigatório p/ automação. */
   dimonaSku?: string;

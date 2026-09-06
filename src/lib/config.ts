@@ -1,5 +1,5 @@
-export const SITE_NAME = "GEEKO";
-export const SITE_TAGLINE = "Seu universo. Seu estilo.";
+export const SITE_NAME = "SAGYX";
+export const SITE_TAGLINE = "Não siga. Antecipe.";
 export const SITE_URL = "https://geeko.com.br";
 
 // Preencha com o número oficial (DDI+DDD+número, só dígitos no .env)

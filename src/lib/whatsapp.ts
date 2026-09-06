@@ -4,11 +4,11 @@ import type { CartItem } from "@/types/catalog";
 
 export function buildWhatsAppMessage(items: CartItem[]) {
   const lines = [
-    "Olá, GEEKO!",
+    "Olá, SAGYX!",
     "",
     "Quero fazer um pedido:",
     "",
-    "PEDIDO GEEKO",
+    "PEDIDO SAGYX",
     "",
   ];
 
@@ -47,6 +47,6 @@ export function getWhatsAppContactUrl(prefill?: string) {
   const digits = WHATSAPP_NUMBER.replace(/\D/g, "");
   if (!digits) return null;
   return `https://wa.me/${digits}?text=${encodeURIComponent(
-    prefill ?? "Olá, GEEKO! Quero saber mais sobre as peças."
+    prefill ?? "Olá, SAGYX! Quero saber mais sobre as peças."
   )}`;
 }

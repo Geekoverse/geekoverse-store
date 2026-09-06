@@ -12,8 +12,8 @@ export const PRODUCTS: Product[] = [
     kind: "camiseta",
     category: "Games",
     images: [
-      { src: "/logo.jpeg", alt: "Extra Life — frente" },
-      { src: "/logo.jpeg", alt: "Extra Life — verso" },
+      { src: "/sagyx-icon.png", alt: "Extra Life — frente" },
+      { src: "/sagyx-icon.png", alt: "Extra Life — verso" },
     ],
     sizes: ["P", "M", "G", "GG"],
     colors: [
@@ -35,8 +35,8 @@ export const PRODUCTS: Product[] = [
     kind: "camiseta",
     category: "Tech",
     images: [
-      { src: "/logo.jpeg", alt: "Hello World — frente" },
-      { src: "/logo.jpeg", alt: "Hello World — verso" },
+      { src: "/sagyx-icon.png", alt: "Hello World — frente" },
+      { src: "/sagyx-icon.png", alt: "Hello World — verso" },
     ],
     sizes: ["P", "M", "G", "GG"],
     colors: [
@@ -58,8 +58,8 @@ export const PRODUCTS: Product[] = [
     kind: "moletom",
     category: "Fantasia",
     images: [
-      { src: "/logo.jpeg", alt: "Moletom Um Círculo — frente" },
-      { src: "/logo.jpeg", alt: "Moletom Um Círculo — verso" },
+      { src: "/sagyx-icon.png", alt: "Moletom Um Círculo — frente" },
+      { src: "/sagyx-icon.png", alt: "Moletom Um Círculo — verso" },
     ],
     sizes: ["P", "M", "G", "GG"],
     colors: [{ id: "preta", name: "Preta", hex: "#111111" }],

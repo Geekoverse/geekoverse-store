@@ -12,22 +12,22 @@ export default function Home() {
     <div className="py-10">
       <section className="grid items-center gap-8 md:grid-cols-2">
         <div>
-          <p className="text-xs tracking-[0.35em] text-cream/60">GEEKO • GEEK MINIMALISTA</p>
+          <p className="text-xs tracking-[0.35em] text-cream/60">SAGYX • STREETWEAR AUTORAL</p>
           <h1 className="mt-3 text-4xl font-bold leading-tight md:text-5xl">
-            Seu universo.
+            Não siga.
             <br />
-            Seu estilo.
+            Antecipe.
           </h1>
           <p className="mt-4 max-w-md text-cream/70">
-            Camisetas e moletons com estampas discretas na frente e nas costas.
-            Qualquer um pode usar, só quem é do universo entende.
+            Camisetas e moletons com estampas autorais na frente e nas costas.
+            Feitas para quem não segue manada.
           </p>
           <div className="mt-6 flex gap-3">
             <Link href="/catalogo" className="rounded-full bg-cream px-5 py-2.5 text-sm font-semibold text-ink">
               Ver catálogo
             </Link>
             <Link href="/sobre" className="rounded-full border border-cream/20 px-5 py-2.5 text-sm">
-              Conhecer a GEEKO
+              Conhecer a SAGYX
             </Link>
           </div>
           <p className="mt-4 text-xs text-cream/50">
@@ -37,7 +37,7 @@ export default function Home() {
         </div>
         <div className="overflow-hidden rounded-3xl border border-cream/10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.jpeg" alt="GEEKO — logo" className="aspect-square w-full object-cover" />
+          <img src="/sagyx-icon.png" alt="SAGYX — raposa" className="aspect-square w-full object-cover" />
         </div>
       </section>
 
